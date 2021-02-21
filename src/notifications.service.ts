@@ -1,7 +1,7 @@
 import { Injectable, Type } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { BaseChannel } from './channels/base.channel';
-import { Notification } from './notification/notification';
+import { NotificationChannelInterface } from './channels/notification-channel.interface';
+import { NotificationInterface } from './notification/notification.interface';
 
 @Injectable()
 export class NotificationsService {
@@ -11,10 +11,10 @@ export class NotificationsService {
    * Process a notification and send via designated channel
    * @param notification
    */
-  public send(notification: Notification): Promise<void[]> {
+  public send(notification: NotificationInterface): Promise<void[]> {
     const channels = notification.broadcastOn();
     return Promise.all(
-      channels.map((channel: Type<BaseChannel>) =>
+      channels.map((channel: Type<NotificationChannelInterface>) =>
         this.sendOnChannel(notification, channel),
       ),
     );
@@ -26,8 +26,8 @@ export class NotificationsService {
    * @param channel
    */
   async sendOnChannel(
-    notification: Notification,
-    channel: Type<BaseChannel>,
+    notification: NotificationInterface,
+    channel: Type<NotificationChannelInterface>,
   ): Promise<any> {
     const chann = await this.resolveChannel(channel);
     await chann.send(notification);
@@ -37,6 +37,6 @@ export class NotificationsService {
    * Resolve the channel needed to send the Notification
    * @param channel
    */
-  resolveChannel = (channel: Type<BaseChannel>) =>
+  resolveChannel = (channel: Type<NotificationChannelInterface>) =>
     this.moduleRef.create(channel);
 }
