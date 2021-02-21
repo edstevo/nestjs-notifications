@@ -9,19 +9,37 @@ Typically, notifications should be short, informational messages that notify use
 ## Installation
 
 ```bash
-$ npm install
+$ npm install nestjs-notifications --save
 ```
 
 ## Usage
 
-The two components you need to make use of in this module are a Channel and a Notification.
+The two components you need to make use of in this module are a Channel and a Notification. You can then send the notification like so
+
+```
+import { HttpService, Injectable } from '@nestjs/common';
+import { ExampleNotification } from 'xxxx';
+import { NotificationsService } from 'nestjs-notifications';
+
+@Injectable()
+export class ExampleService {
+  constructor(private readonly notifications: NotificationsService) {}
+
+  /**
+   * Send the given notification
+   */
+  public async send(): Promise<void> {
+    const notification = new ExampleNotification();
+    this.notifications.send(notification);
+  }
+}
+```
 
 ### Example Channel
 
 ```
 import { HttpService, Injectable } from '@nestjs/common';
-import { HttpNotification } from './http-notification.interface';
-import { NotificationChannelInterface } from '../notification-channel.interface';
+import { NotificationChannelInterface, HttpNotification } from 'nestjs-notifications';
 
 @Injectable()
 export class HttpChannel implements NotificationChannelInterface {
@@ -52,9 +70,7 @@ You can specify as many channels as you want to in the `broadcastOn` function.
 
 ```
 import { Type } from '@nestjs/common';
-import { HttpChannel } from '../channels/http/http.channel';
-import { NotificationChannelInterface } from '../channels/notification-channel.interface';
-import { NotificationInterface } from './notification.interface';
+import { HttpChannel, NotificationChannelInterface, NotificationInterface } from 'nestjs-notifications';
 
 export class ExampleNotification implements NotificationInterface {
   private data: any;
