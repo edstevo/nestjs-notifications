@@ -1,6 +1,6 @@
 {
   "name": "nestjs-notifications",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "NestJs Notifications is a multi-channel notification service inspired by Laravel Notifications designed for sending notifications across a variety of delivery channels.",
   "author": "Ed Stephenson",
   "license": "MIT",
