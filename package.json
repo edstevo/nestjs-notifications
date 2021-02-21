@@ -3,21 +3,36 @@
   "version": "0.0.2",
   "description": "NestJs Notifications is a multi-channel notification service inspired by Laravel Notifications designed for sending notifications across a variety of delivery channels.",
   "author": "Ed Stephenson",
-  "license": "UNLICENSED",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edstevo/nestjs-notifications"
+  },
+  "keywords": [
+    "nest",
+    "nestjs",
+    "notifications"
+  ],
+  "files": [
+    "dist",
+    "index.js",
+    "index.d.ts"
+  ],
+  "main": "dist/index.js",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
+  },
+  "peerDependencies": {
+    "@nestjs/common": ">=7.5.1",
+    "@nestjs/core": ">=7.5.1"
   },
   "dependencies": {
     "@nestjs/common": "^7.5.1",
