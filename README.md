@@ -4,7 +4,7 @@ NestJs Notifications is a multi-channel notification service inspired by Laravel
 
 This module is designed for sending notifications across a variety of delivery channels.
 
-Typically, notifications should be short, informational messages that notify users of something that occurred in your application. For example, if you are writing a billing application, you might send an "Invoice Paid" notification to your users via the email and SMS channels.
+Typically, notifications should be short, informational messages that notify users of something that occurred in your application. For example, if you are writing a billing application, you might send an "Invoice Paid" notification to your users via email and SMS channels.
 
 ## Installation
 
@@ -14,7 +14,7 @@ $ npm install
 
 ## Usage
 
-The two components you need to make use of this module are a Channel and a Notification.
+The two components you need to make use of in this module are a Channel and a Notification.
 
 ### Example Channel
 
