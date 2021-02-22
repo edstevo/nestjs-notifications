@@ -72,8 +72,11 @@ export class ExampleHttpChannel implements NestJsNotificationChannel {
 
 ### Example Notification
 
-You can specify as many channels as you want to in the `broadcastOn` function.
-You can also pass any data you need into the constructor of the notification.
+You can specify as many channels as you want to in the `broadcastOn()` function.
+
+When constructing payloads, you can specify functions to create customised payloads for each channel, or fallback to the default `toPayload()` method.
+
+You can also pass any data you need into the constructor of the notification to pass to the payload constructors.
 
 ```
 import { Type } from '@nestjs/common';
@@ -105,6 +108,12 @@ export class ExampleNotification implements NestJsNotification {
     ];
   }
 
+  toHttp() { }
+
+  toCustom() { }
+
+  toEmail() { }
+
   /**
    * Get the json representation of the notification.
    * @returns {}
@@ -131,8 +140,7 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { HttpNotification } from './http-notification.interface';
-import { NestJsNotificationChannel } from '../notification-channel.interface';
+import { HttpNotification, NestJsNotificationChannel } from 'nestjs-notifications';
 
 @Injectable()
 export class HttpChannel implements NestJsNotificationChannel {
@@ -171,7 +179,7 @@ export class HttpChannel implements NestJsNotificationChannel {
 #### HttpNotification Interface
 
 ```
-import { NestJsNotification } from '../../notification/notification.interface';
+import { NestJsNotification } from 'nestjs-notifications';
 
 export interface HttpNotification extends NestJsNotification {
   /**
