@@ -1,14 +1,14 @@
 import { Type } from '@nestjs/common';
-import { NotificationChannelInterface } from 'src/channels/notification-channel.interface';
+import { NestJsNotificationChannel } from 'src/channels/notification-channel.interface';
 import { HttpChannel } from '../channels/http/http.channel';
-import { NotificationInterface } from './notification.interface';
+import { NestJsNotification } from './notification.interface';
 
-class TestNotification implements NotificationInterface {
+class TestNotification implements NestJsNotification {
   /**
    * Get the channels the notification should broadcast on
-   * @returns {Type<NotificationChannelInterface>[]} array
+   * @returns {Type<NestJsNotificationChannel>[]} array
    */
-  public broadcastOn(): Type<NotificationChannelInterface>[] {
+  public broadcastOn(): Type<NestJsNotificationChannel>[] {
     return [HttpChannel];
   }
 }

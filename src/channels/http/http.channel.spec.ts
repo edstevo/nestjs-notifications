@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HttpChannel } from './http.channel';
 import { HttpNotification } from './http-notification.interface';
 import { of } from 'rxjs';
-import { NotificationChannelInterface } from '../notification-channel.interface';
+import { NestJsNotificationChannel } from '../notification-channel.interface';
 
 const testUrl = 'testUrl';
 const testToHttpData = { test: 'toHttp' };
@@ -34,7 +34,7 @@ class TestToPayloadNotification implements HttpNotification {
   toPayload?(): Record<string, any> {
     return testToPayloadData;
   }
-  public broadcastOn(): Type<NotificationChannelInterface>[] {
+  public broadcastOn(): Type<NestJsNotificationChannel>[] {
     return [HttpChannel];
   }
 }
@@ -46,7 +46,7 @@ class TestToHttpNotification implements HttpNotification {
   toHttp(): Record<string, any> {
     return testToHttpData;
   }
-  public broadcastOn(): Type<NotificationChannelInterface>[] {
+  public broadcastOn(): Type<NestJsNotificationChannel>[] {
     return [HttpChannel];
   }
 }

@@ -1,30 +1,30 @@
 import { Type } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { NestJsNotificationsModule } from '../nestjs-notifications.module';
-import { NotificationInterface } from '../notification/notification.interface';
-import { NotificationsService } from '../notifications.service';
-import { NotificationChannelInterface } from './notification-channel.interface';
+import { NestJsNotification } from '../notification/notification.interface';
+import { NestJsNotificationsService } from '../nestjs-notifications.service';
+import { NestJsNotificationChannel } from './notification-channel.interface';
 
 const testSendFn = jest.fn().mockImplementation(() => Promise.resolve());
 
-class CustomChannel implements NotificationChannelInterface {
+class CustomChannel implements NestJsNotificationChannel {
   send = testSendFn;
 }
 
-class CustomNotification implements NotificationInterface {
+class CustomNotification implements NestJsNotification {
 
   /**
    * Get the channels the notification should broadcast on.
-   * @returns {Type<NotificationChannelInterface>[]} array
+   * @returns {Type<NestJsNotificationChannel>[]} array
    */
-  public broadcastOn(): Type<NotificationChannelInterface>[] {
+  public broadcastOn(): Type<NestJsNotificationChannel>[] {
     return [CustomChannel];
   }
 }
 
 describe('CustomChannel E2E', () => {
   let module: TestingModule;
-  let service: NotificationsService;
+  let service: NestJsNotificationsService;
   let notification: CustomNotification;
 
   beforeEach(async () => {
@@ -32,7 +32,7 @@ describe('CustomChannel E2E', () => {
       imports: [NestJsNotificationsModule],
     }).compile();
 
-    service = module.get<NotificationsService>(NotificationsService);
+    service = module.get<NestJsNotificationsService>(NestJsNotificationsService);
     notification = new CustomNotification();
   });
 

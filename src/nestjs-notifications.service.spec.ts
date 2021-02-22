@@ -1,31 +1,31 @@
 import { Type } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotificationChannelInterface } from './channels/notification-channel.interface';
+import { NestJsNotificationChannel } from './channels/notification-channel.interface';
 import { HttpChannel } from './channels/http/http.channel';
-import { NotificationInterface } from './notification/notification.interface';
-import { NotificationsService } from './notifications.service';
+import { NestJsNotification } from './notification/notification.interface';
+import { NestJsNotificationsService } from './nestjs-notifications.service';
 
 jest.mock('./channels/http/http.channel');
 
-class TestNotification implements NotificationInterface {
-  public broadcastOn(): Type<NotificationChannelInterface>[] {
+class TestNotification implements NestJsNotification {
+  public broadcastOn(): Type<NestJsNotificationChannel>[] {
     return [HttpChannel];
   }
 }
 
-describe('NotificationsService', () => {
+describe('NestJsNotificationsService', () => {
   let module: TestingModule;
   let moduleRef: ModuleRef;
-  let service: NotificationsService;
+  let service: NestJsNotificationsService;
   let notification: TestNotification;
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      providers: [NotificationsService],
+      providers: [NestJsNotificationsService],
     }).compile();
 
-    service = module.get<NotificationsService>(NotificationsService);
+    service = module.get<NestJsNotificationsService>(NestJsNotificationsService);
     moduleRef = module.get<ModuleRef>(ModuleRef);
     notification = new TestNotification();
   });

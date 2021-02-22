@@ -1,20 +1,20 @@
 import { Injectable, Type } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { NotificationChannelInterface } from './channels/notification-channel.interface';
-import { NotificationInterface } from './notification/notification.interface';
+import { NestJsNotificationChannel } from './channels/notification-channel.interface';
+import { NestJsNotification } from './notification/notification.interface';
 
 @Injectable()
-export class NotificationsService {
+export class NestJsNotificationsService {
   constructor(private moduleRef: ModuleRef) {}
 
   /**
    * Process a notification and send via designated channel
    * @param notification
    */
-  public send(notification: NotificationInterface): Promise<void[]> {
+  public send(notification: NestJsNotification): Promise<void[]> {
     const channels = notification.broadcastOn();
     return Promise.all(
-      channels.map((channel: Type<NotificationChannelInterface>) =>
+      channels.map((channel: Type<NestJsNotificationChannel>) =>
         this.sendOnChannel(notification, channel),
       ),
     );
@@ -26,8 +26,8 @@ export class NotificationsService {
    * @param channel
    */
   async sendOnChannel(
-    notification: NotificationInterface,
-    channel: Type<NotificationChannelInterface>,
+    notification: NestJsNotification,
+    channel: Type<NestJsNotificationChannel>,
   ): Promise<any> {
     const chann = await this.resolveChannel(channel);
     await chann.send(notification);
@@ -37,6 +37,6 @@ export class NotificationsService {
    * Resolve the channel needed to send the Notification
    * @param channel
    */
-  resolveChannel = (channel: Type<NotificationChannelInterface>) =>
+  resolveChannel = (channel: Type<NestJsNotificationChannel>) =>
     this.moduleRef.create(channel);
 }

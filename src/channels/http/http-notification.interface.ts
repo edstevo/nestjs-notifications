@@ -1,6 +1,6 @@
-import { NotificationInterface } from '../../notification/notification.interface';
+import { NestJsNotification } from '../../notification/notification.interface';
 
-export interface HttpNotification extends NotificationInterface {
+export interface HttpNotification extends NestJsNotification {
   /**
    * Define the Http url to send the notification to
    * @returns {string}

@@ -4,10 +4,11 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { HttpNotification } from './http-notification.interface';
-import { NotificationChannelInterface } from '../notification-channel.interface';
+import { NestJsNotificationChannel } from '../notification-channel.interface';
 
 @Injectable()
-export class HttpChannel implements NotificationChannelInterface {
+export class HttpChannel implements NestJsNotificationChannel {
+
   constructor(private readonly httpService: HttpService) {}
 
   /**

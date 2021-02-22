@@ -1,11 +1,11 @@
 import { HttpService, Type } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpChannel } from './http.channel';
-import { NotificationsService } from '../../notifications.service';
+import { NestJsNotificationsService } from '../../nestjs-notifications.service';
 import { NestJsNotificationsModule } from '../../nestjs-notifications.module';
 import { HttpNotification } from './http-notification.interface';
 import { of } from 'rxjs';
-import { NotificationChannelInterface } from '../notification-channel.interface';
+import { NestJsNotificationChannel } from '../notification-channel.interface';
 
 const testUrl = 'testUrl';
 const testData = { test: true };
@@ -19,9 +19,9 @@ class TestNotification implements HttpNotification {
 
   /**
    * Get the channels the notification should broadcast on.
-   * @returns {Type<NotificationChannelInterface>[]} array
+   * @returns {Type<NestJsNotificationChannel>[]} array
    */
-  public broadcastOn(): Type<NotificationChannelInterface>[] {
+  public broadcastOn(): Type<NestJsNotificationChannel>[] {
     return [HttpChannel];
   }
 
@@ -36,7 +36,7 @@ class TestNotification implements HttpNotification {
 
 describe('HttpChannel E2E', () => {
   let module: TestingModule;
-  let service: NotificationsService;
+  let service: NestJsNotificationsService;
   let httpService: HttpService;
   let notification: TestNotification;
 
@@ -45,7 +45,7 @@ describe('HttpChannel E2E', () => {
       imports: [NestJsNotificationsModule],
     }).compile();
 
-    service = module.get<NotificationsService>(NotificationsService);
+    service = module.get<NestJsNotificationsService>(NestJsNotificationsService);
     httpService = module.get<HttpService>(HttpService);
     notification = new TestNotification(testData);
   });

@@ -1,17 +1,17 @@
 import { DynamicModule, HttpModule, Module } from '@nestjs/common';
-import { NotificationsService } from './notifications.service';
+import { NestJsNotificationsService } from './nestjs-notifications.service';
 
 @Module({
   imports: [HttpModule],
-  providers: [NotificationsService],
+  providers: [NestJsNotificationsService],
 })
 export class NestJsNotificationsModule {
   static forRoot(): DynamicModule {
     return {
       global: true,
       module: NestJsNotificationsModule,
-      providers: [NotificationsService],
-      exports: [NotificationsService],
+      providers: [NestJsNotificationsService],
+      exports: [NestJsNotificationsService],
     };
   }
 }

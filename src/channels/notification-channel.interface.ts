@@ -1,9 +1,9 @@
-import { NotificationInterface } from '../notification/notification.interface';
+import { NestJsNotification } from '../notification/notification.interface';
 
-export interface NotificationChannelInterface {
+export interface NestJsNotificationChannel {
   /**
    * Send the given notification
    * @param notification
    */
-  send(notification: NotificationInterface): Promise<void>;
+  send(notification: NestJsNotification): Promise<void>;
 }
