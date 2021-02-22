@@ -8,11 +8,9 @@ export interface SendGridNotification extends NestJsNotification {
    */
   apiKey(): string;
 
-
-
   /**
-   * Get the Http representation of the notification.
-   * @returns {SendGridRequestBody} http payload data
+   * Get the SendGrid representation of the notification.
+   * @returns {SendGridRequestBody}
    */
   toSendGrid?(): SendGridRequestBody;
 }
