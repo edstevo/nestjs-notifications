@@ -26,7 +26,7 @@ class TestNotification implements SendGridNotification {
     return [SendGridChannel];
   }
 
-  apiKey(): string {
+  sendGridApiKey(): string {
     return testApiKey;
   }
 

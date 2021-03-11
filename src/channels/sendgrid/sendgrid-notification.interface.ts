@@ -6,7 +6,7 @@ export interface SendGridNotification extends NestJsNotification {
    * Define the your api key
    * @returns {string}
    */
-  apiKey(): string;
+  sendGridApiKey(): string;
 
   /**
    * Get the SendGrid representation of the notification.

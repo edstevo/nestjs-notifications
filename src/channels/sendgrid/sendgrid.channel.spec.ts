@@ -30,7 +30,7 @@ class TestNotification implements SendGridNotification {
     return [SendGridChannel];
   }
 
-  public apiKey(): string {
+  public sendGridApiKey(): string {
     return testApiKey;
   }
 
@@ -44,7 +44,7 @@ class TestNotification implements SendGridNotification {
 }
 
 class TestToPayloadNotification implements SendGridNotification {
-  apiKey(): string {
+  sendGridApiKey(): string {
     return testApiKey;
   }
   toPayload?(): any {
@@ -56,7 +56,7 @@ class TestToPayloadNotification implements SendGridNotification {
 }
 
 class TestToSendGridNotification implements SendGridNotification {
-  apiKey(): string {
+  sendGridApiKey(): string {
     return testApiKey;
   }
   toSendGrid(): SendGridRequestBody {

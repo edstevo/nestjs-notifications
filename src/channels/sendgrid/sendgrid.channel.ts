@@ -20,7 +20,7 @@ export class SendGridChannel implements NestJsNotificationChannel {
     await this.httpService
       .post(SendGridApiUrl, data, {
         headers: {
-          Authorization: notification.apiKey(),
+          Authorization: notification.sendGridApiKey(),
         },
       })
       .toPromise();
