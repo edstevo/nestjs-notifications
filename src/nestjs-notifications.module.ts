@@ -1,4 +1,6 @@
 import { DynamicModule, HttpModule, Module } from '@nestjs/common';
+import { NestJsNotificationsModuleAsyncOptions } from './interfaces';
+import { NestJsNotificationsCoreModule } from './nestjs-notifications.core-module';
 import { NestJsNotificationsService } from './nestjs-notifications.service';
 
 @Module({
@@ -6,12 +8,21 @@ import { NestJsNotificationsService } from './nestjs-notifications.service';
   providers: [NestJsNotificationsService],
 })
 export class NestJsNotificationsModule {
-  static forRoot(): DynamicModule {
+  public static forRoot(): DynamicModule {
     return {
-      global: true,
       module: NestJsNotificationsModule,
-      providers: [NestJsNotificationsService],
-      exports: [NestJsNotificationsService],
+      imports: [NestJsNotificationsCoreModule.forRoot()],
+      exports: [NestJsNotificationsCoreModule],
+    };
+  }
+
+  public static forRootAsync(
+    options: NestJsNotificationsModuleAsyncOptions,
+  ): DynamicModule {
+    return {
+      module: NestJsNotificationsModule,
+      imports: [NestJsNotificationsCoreModule.forRootAsync(options)],
+      exports: [NestJsNotificationsCoreModule],
     };
   }
 }
