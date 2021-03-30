@@ -1,4 +1,4 @@
-import { Inject, Injectable, Type } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit, Type } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { JobOptions, Queue } from 'bull';
 import { NestJsNotificationChannel } from './channels/notification-channel.interface';
@@ -9,7 +9,9 @@ import {
 import { NestJsNotification } from './notification/notification.interface';
 
 @Injectable()
-export class NestJsNotificationsService {
+export class NestJsNotificationsService implements OnModuleInit {
+  processor_name = 'nestjs_notification';
+
   constructor(
     private moduleRef: ModuleRef,
     @Inject(NESTJS_NOTIFICATIONS_QUEUE)
@@ -17,6 +19,17 @@ export class NestJsNotificationsService {
     @Inject(NESTJS_NOTIFICATIONS_JOB_OPTIONS)
     private defaultJobOptions: JobOptions,
   ) {}
+
+  onModuleInit() {
+    if (this.notificationsQueue) {
+      this.notificationsQueue.process(
+        this.processor_name,
+        async (job: { data: { notification; callback } }, done) => {
+          await job.data.callback(job.data.notification).then(done());
+        },
+      );
+    }
+  }
 
   /**
    * Process a notification and send via designated channel
@@ -36,10 +49,16 @@ export class NestJsNotificationsService {
    * @param notification
    */
   public queue(notification: NestJsNotification): any {
-    return {
-      notification,
-      callback: this.send,
-    };
+    if (!this.notificationsQueue) throw new Error('No Queue Specified');
+
+    return this.notificationsQueue.add(
+      this.processor_name,
+      {
+        notification,
+        callback: this.send,
+      },
+      this.defaultJobOptions,
+    );
   }
 
   /**
