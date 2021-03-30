@@ -209,6 +209,10 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Collaborating
+
+Would appreciate any support anyone may wish to offer. Please get in contact.
+
 ## License
 
 NestJs Notifications is [MIT licensed](LICENSE).
