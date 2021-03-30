@@ -1,4 +1,4 @@
-import { HttpService, Type } from '@nestjs/common';
+import { HttpModule, HttpService, Type } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SendGridChannel } from './sendgrid.channel';
 import { NestJsNotificationsService } from '../../nestjs-notifications.service';
@@ -7,6 +7,7 @@ import { SendGridNotification } from './sendgrid-notification.interface';
 import { of } from 'rxjs';
 import { NestJsNotificationChannel } from '../notification-channel.interface';
 import { SendGridApiUrl } from './constants';
+import { NestJsNotificationsModuleOptions } from '../../interfaces';
 
 const testApiKey = 'testApiKey';
 const testData = { test: true };
@@ -43,7 +44,11 @@ describe('SendGridChannel E2E', () => {
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      imports: [NestJsNotificationsModule],
+      imports: [
+        NestJsNotificationsModule.forRootAsync({
+          imports: [HttpModule]
+        })
+      ]
     }).compile();
 
     service = module.get<NestJsNotificationsService>(NestJsNotificationsService);

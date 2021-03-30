@@ -21,7 +21,7 @@ export class NestJsNotificationsCoreModule {
   ): DynamicModule {
     const queueProvider: ValueProvider = {
       provide: NESTJS_NOTIFICATIONS_QUEUE,
-      useValue: options.queue,
+      useValue: options.queue ? options.queue : null,
     };
 
     const jobOptionsProvider: ValueProvider = {
@@ -33,11 +33,15 @@ export class NestJsNotificationsCoreModule {
       global: true,
       module: NestJsNotificationsCoreModule,
       providers: [
-        NestJsNotificationsService,
         queueProvider,
         jobOptionsProvider,
+        NestJsNotificationsService,
       ],
-      exports: [NestJsNotificationsService],
+      exports: [
+        NESTJS_NOTIFICATIONS_QUEUE,
+        NESTJS_NOTIFICATIONS_JOB_OPTIONS,
+        NestJsNotificationsService,
+      ],
     };
   }
 
@@ -53,7 +57,11 @@ export class NestJsNotificationsCoreModule {
         ...this.createQueueProvider(),
         NestJsNotificationsService,
       ],
-      exports: [NestJsNotificationsService],
+      exports: [
+        NESTJS_NOTIFICATIONS_QUEUE,
+        NESTJS_NOTIFICATIONS_JOB_OPTIONS,
+        NestJsNotificationsService,
+      ],
     };
   }
 
@@ -63,7 +71,7 @@ export class NestJsNotificationsCoreModule {
         provide: NESTJS_NOTIFICATIONS_QUEUE,
         inject: [NESTJS_NOTIFICATIONS_OPTIONS],
         useFactory(options: NestJsNotificationsModuleOptions): Queue {
-          return options.queue;
+          return options.queue ? options.queue : null;
         },
       },
       {
@@ -82,7 +90,13 @@ export class NestJsNotificationsCoreModule {
     if (options.useExisting || options.useFactory) {
       return [this.createAsyncOptionsProvider(options)];
     } else if (!options.useClass) {
-      throw new Error('Invalid configuration');
+      return [
+        {
+          provide: NESTJS_NOTIFICATIONS_OPTIONS,
+          useValue: {},
+          inject: options.inject || [],
+        },
+      ];
     }
 
     return [

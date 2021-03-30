@@ -2,8 +2,8 @@ import { ModuleMetadata, Type } from '@nestjs/common';
 import { JobOptions, Queue } from 'bull';
 
 export type NestJsNotificationsModuleOptions = {
-  queue: Queue;
-  defaultJobOptions: JobOptions;
+  queue?: Queue;
+  defaultJobOptions?: JobOptions;
 };
 
 export interface NestJsNotificationsModuleOptionsFactory {

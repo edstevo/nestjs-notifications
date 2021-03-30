@@ -6,7 +6,10 @@ import {
   NESTJS_NOTIFICATIONS_JOB_OPTIONS,
   NESTJS_NOTIFICATIONS_QUEUE,
 } from './constants';
-import { NestJsNotification, NestJsQueuedNotification } from './notification/notification.interface';
+import {
+  NestJsNotification,
+  NestJsQueuedNotification,
+} from './notification/notification.interface';
 
 @Injectable()
 export class NestJsNotificationsService implements OnModuleInit {

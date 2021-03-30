@@ -5,6 +5,7 @@ import { NestJsNotificationChannel } from './channels/notification-channel.inter
 import { HttpChannel } from './channels/http/http.channel';
 import { NestJsNotification } from './notification/notification.interface';
 import { NestJsNotificationsService } from './nestjs-notifications.service';
+import { NestJsNotificationsModule } from './nestjs-notifications.module';
 
 jest.mock('./channels/http/http.channel');
 
@@ -22,7 +23,7 @@ describe('NestJsNotificationsService', () => {
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      providers: [NestJsNotificationsService],
+      imports: [NestJsNotificationsModule.forRoot({})]
     }).compile();
 
     service = module.get<NestJsNotificationsService>(NestJsNotificationsService);

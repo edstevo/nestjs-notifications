@@ -29,7 +29,7 @@ describe('CustomChannel E2E', () => {
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      imports: [NestJsNotificationsModule],
+      imports: [NestJsNotificationsModule.forRoot({})],
     }).compile();
 
     service = module.get<NestJsNotificationsService>(NestJsNotificationsService);

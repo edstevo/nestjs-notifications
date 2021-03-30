@@ -1,4 +1,4 @@
-import { HttpService, Type } from '@nestjs/common';
+import { HttpModule, HttpService, Type } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpChannel } from './http.channel';
 import { NestJsNotificationsService } from '../../nestjs-notifications.service';
@@ -42,7 +42,11 @@ describe('HttpChannel E2E', () => {
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      imports: [NestJsNotificationsModule],
+      imports: [
+        NestJsNotificationsModule.forRootAsync({
+          imports: [HttpModule]
+        })
+      ]
     }).compile();
 
     service = module.get<NestJsNotificationsService>(NestJsNotificationsService);
