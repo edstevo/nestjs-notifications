@@ -6,7 +6,7 @@ import {
   NESTJS_NOTIFICATIONS_JOB_OPTIONS,
   NESTJS_NOTIFICATIONS_QUEUE,
 } from './constants';
-import { NestJsNotification } from './notification/notification.interface';
+import { NestJsNotification, NestJsQueuedNotification } from './notification/notification.interface';
 
 @Injectable()
 export class NestJsNotificationsService implements OnModuleInit {
@@ -18,7 +18,7 @@ export class NestJsNotificationsService implements OnModuleInit {
     private notificationsQueue: Queue,
     @Inject(NESTJS_NOTIFICATIONS_JOB_OPTIONS)
     private defaultJobOptions: JobOptions,
-  ) {}
+  ) { }
 
   onModuleInit() {
     if (this.notificationsQueue) {
@@ -48,7 +48,7 @@ export class NestJsNotificationsService implements OnModuleInit {
    * Push a job to the queue
    * @param notification
    */
-  public queue(notification: NestJsNotification): any {
+  public queue(notification: NestJsQueuedNotification): any {
     if (!this.notificationsQueue) throw new Error('No Queue Specified');
 
     return this.notificationsQueue.add(
@@ -57,7 +57,9 @@ export class NestJsNotificationsService implements OnModuleInit {
         notification,
         callback: this.send,
       },
-      this.defaultJobOptions,
+      notification.getJobOptions()
+        ? notification.getJobOptions()
+        : this.defaultJobOptions,
     );
   }
 

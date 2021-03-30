@@ -1,4 +1,5 @@
 import { Type } from '@nestjs/common';
+import { JobOptions } from 'bull';
 import { NestJsNotificationChannel } from '../channels/notification-channel.interface';
 
 export interface NestJsNotification {
@@ -13,4 +14,12 @@ export interface NestJsNotification {
    * @returns json
    */
   toPayload?(): Record<string, any>;
+}
+
+export interface NestJsQueuedNotification {
+  /**
+   * Return any job options for this Notification
+   * @returns {JobOptions | null}
+   */
+  getJobOptions(): JobOptions | null;
 }
