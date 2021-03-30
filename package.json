@@ -30,8 +30,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prepublish": "npm ci && npm run build",
-    "publish": "np --patch --no-yarn"
+    "prepub": "npm ci && npm run build",
+    "pub": "np patch --no-yarn"
   },
   "peerDependencies": {
     "@nestjs/common": ">=7.5.1",
