@@ -1,6 +1,6 @@
 import { Type } from '@nestjs/common';
-import { NestJsNotificationChannel } from 'src/channels/notification-channel.interface';
 import { HttpChannel } from '../channels/http/http.channel';
+import { NestJsNotificationChannel } from '../channels/notification-channel.interface';
 import { NestJsNotification } from './notification.interface';
 
 class TestNotification implements NestJsNotification {
