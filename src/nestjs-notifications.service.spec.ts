@@ -3,16 +3,42 @@ import { ModuleRef } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import { NestJsNotificationChannel } from './channels/notification-channel.interface';
 import { HttpChannel } from './channels/http/http.channel';
-import { NestJsNotification } from './notification/notification.interface';
+import { NestJsNotification, NestJsQueuedNotification } from './notification/notification.interface';
 import { NestJsNotificationsService } from './nestjs-notifications.service';
 import { NestJsNotificationsModule } from './nestjs-notifications.module';
+import { BullModule, getQueueToken, InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
+import { NestJsNotificationsModuleOptions, NestJsNotificationsModuleOptionsFactory } from './interfaces';
 
 jest.mock('./channels/http/http.channel');
 
-class TestNotification implements NestJsNotification {
+class TestNotification implements NestJsNotification, NestJsQueuedNotification {
   public broadcastOn(): Type<NestJsNotificationChannel>[] {
     return [HttpChannel];
   }
+
+  getJobOptions() { return null }
+}
+
+export class NestJsNotificationConfigService
+  implements NestJsNotificationsModuleOptionsFactory {
+  constructor(
+    @InjectQueue('notifications_queue')
+    private readonly notificationsQueue: Queue,
+  ) {}
+
+  createNestJsNotificationsModuleOptions = (): NestJsNotificationsModuleOptions => {
+    return {
+      queue: this.notificationsQueue,
+      defaultJobOptions: {
+        attempts: 5,
+        backoff: {
+          type: 'exponential',
+          delay: 1000,
+        },
+      },
+    }
+  };
 }
 
 describe('NestJsNotificationsService', () => {
@@ -66,4 +92,46 @@ describe('NestJsNotificationsService', () => {
       expect(res).toBeInstanceOf(HttpChannel);
     });
   });
+
+  describe('queuing',()=>{
+    let queue: Queue;
+
+    beforeEach(async () => {
+      module = await Test.createTestingModule({
+        imports: [
+          NestJsNotificationsModule.forRootAsync({
+            imports: [
+              BullModule.forRoot({}),
+              BullModule.registerQueue({
+                name: 'notifications_queue',
+              }),
+            ],
+            useClass: NestJsNotificationConfigService
+          })
+        ],
+        providers: [
+
+        ]
+      }).compile();
+
+      service = module.get<NestJsNotificationsService>(NestJsNotificationsService);
+      moduleRef = module.get<ModuleRef>(ModuleRef);
+      notification = new TestNotification();
+      queue = module.get<Queue>(getQueueToken('notifications_queue'))
+    });
+
+    it('should be defined',()=>{
+      expect(service).toBeDefined();
+    });
+
+    describe('queue',()=>{
+      fit('should add to the queue correctly', async ()=>{
+        jest.spyOn(queue, 'add').mockImplementation(()=>true as any);
+
+        await service.queue(notification);
+
+        expect(queue.add).toHaveBeenCalled()
+      })
+    });
+  })
 });
