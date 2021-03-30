@@ -28,7 +28,11 @@ export class NestJsNotificationsService implements OnModuleInit {
       this.notificationsQueue.process(
         this.processor_name,
         async (job: { data: { notification; callback } }, done) => {
-          await job.data.callback(job.data.notification).then(done());
+          try {
+            await job.data.callback(job.data.notification).then(done());
+          } catch (e) {
+            throw e;
+          }
         },
       );
     }
