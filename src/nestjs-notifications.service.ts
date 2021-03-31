@@ -42,7 +42,7 @@ export class NestJsNotificationsService implements OnModuleInit {
    * Process a notification and send via designated channel
    * @param notification
    */
-  public send(notification: NestJsNotification): Promise<void[]> {
+  public send(notification: NestJsNotification): Promise<any> {
     const channels = notification.broadcastOn();
     return Promise.all(
       channels.map((channel: Type<NestJsNotificationChannel>) =>
