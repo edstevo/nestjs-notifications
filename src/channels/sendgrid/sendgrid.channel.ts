@@ -6,6 +6,7 @@ import {
 import { SendGridNotification } from './sendgrid-notification.interface';
 import { NestJsNotificationChannel } from '../notification-channel.interface';
 import { SendGridApiUrl } from './constants';
+import { AxiosResponse } from 'axios';
 
 @Injectable()
 export class SendGridChannel implements NestJsNotificationChannel {
@@ -15,9 +16,11 @@ export class SendGridChannel implements NestJsNotificationChannel {
    * Send the given notification
    * @param notification
    */
-  public async send(notification: SendGridNotification): Promise<void> {
+  public async send(
+    notification: SendGridNotification,
+  ): Promise<AxiosResponse<any>> {
     const data = this.getData(notification);
-    await this.httpService
+    return this.httpService
       .post(SendGridApiUrl, data, {
         headers: {
           Authorization: notification.sendGridApiKey(),
