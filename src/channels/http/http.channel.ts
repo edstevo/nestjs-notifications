@@ -1,3 +1,4 @@
+import { lastValueFrom } from 'rxjs';
 import {
   HttpService,
   Injectable,
@@ -19,7 +20,7 @@ export class HttpChannel implements NestJsNotificationChannel {
     notification: HttpNotification,
   ): Promise<AxiosResponse<any>> {
     const message = this.getData(notification);
-    return this.httpService.post(notification.httpUrl(), message).toPromise();
+    return lastValueFrom(this.httpService.post(notification.httpUrl(), message));
   }
 
   /**
