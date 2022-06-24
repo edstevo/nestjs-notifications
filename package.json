@@ -44,7 +44,7 @@
     "@types/axios": "^0.14.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.6.3"
+    "rxjs": "^7.5.5"
   },
   "devDependencies": {
     "@nestjs/bull": "^0.3.1",

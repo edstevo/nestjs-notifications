@@ -1,3 +1,4 @@
+import { lastValueFrom } from 'rxjs';
 import {
   HttpService,
   Injectable,
@@ -20,13 +21,12 @@ export class SendGridChannel implements NestJsNotificationChannel {
     notification: SendGridNotification,
   ): Promise<AxiosResponse<any>> {
     const data = this.getData(notification);
-    return this.httpService
+    return lastValueFrom(this.httpService
       .post(SendGridApiUrl, data, {
         headers: {
           Authorization: notification.sendGridApiKey(),
         },
-      })
-      .toPromise();
+      }));
   }
 
   /**
