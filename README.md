@@ -20,7 +20,7 @@ Example Channels and example Notifications are below.
 
 Once this has been done, you can be trigger notifications to be sent like so:
 
-```
+```ts
 import { HttpService, Injectable } from '@nestjs/common';
 import { NestJsNotificationsService } from 'nestjs-notifications';
 import { ExampleNotification } from 'xxxx';
@@ -43,7 +43,7 @@ export class ExampleService {
 
 All channels are resolved inside the IOC container, so you can import services, such as the HttpService as you need them.
 
-```
+```ts
 import { HttpService, Injectable } from '@nestjs/common';
 import { NestJsNotificationChannel, NestJsNotification } from 'nestjs-notifications';
 
@@ -78,7 +78,7 @@ When constructing payloads, you can specify functions to create customised paylo
 
 You can also pass any data you need into the constructor of the notification to pass to the payload constructors.
 
-```
+```ts
 import { Type } from '@nestjs/common';
 import { HttpChannel, NestJsNotificationChannel, NestJsNotification } from 'nestjs-notifications';
 import { CustomChannel } from './src/your-project/custom-channel';
@@ -134,7 +134,7 @@ You can implement the `HttpNotification` interface on your Notification Class to
 
 #### HttpChannel Class
 
-```
+```ts
 import {
   HttpService,
   Injectable,
@@ -178,7 +178,7 @@ export class HttpChannel implements NestJsNotificationChannel {
 
 #### HttpNotification Interface
 
-```
+```ts
 import { NestJsNotification } from 'nestjs-notifications';
 
 export interface HttpNotification extends NestJsNotification {
