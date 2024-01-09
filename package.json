@@ -2,22 +2,6 @@
   "name": "nestjs-notifications",
   "version": "0.1.17",
   "description": "NestJs Notifications is a flexible multi-channel notification service inspired by Laravel Notifications designed for sending notifications across a variety of delivery channels.",
-  "author": "Ed Stephenson",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/edstevo/nestjs-notifications"
-  },
-  "keywords": [
-    "nest",
-    "nestjs",
-    "notifications"
-  ],
-  "files": [
-    "dist",
-    "index.js",
-    "index.d.ts"
-  ],
   "main": "dist/index.js",
   "scripts": {
     "prebuild": "rimraf dist",
@@ -25,7 +9,8 @@
     "build": "rimraf -rf dist && tsc -p tsconfig.json",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest --force-exit --runInBand",
+    "test": "jest --force-exit --runInBand --detectOpenHandles",
+    "test:verbose": "jest --force-exit --runInBand --detectOpenHandles --verbose",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -33,43 +18,54 @@
     "prepub": "npm ci && npm run build",
     "pub": "np patch --no-yarn"
   },
-  "peerDependencies": {
-    "@nestjs/common": ">=7.5.1",
-    "@nestjs/core": ">=7.5.1"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edstevo/nestjs-notifications.git"
   },
+  "keywords": [
+    "nest",
+    "nestjs",
+    "notifications"
+  ],
+  "author": "Ed Stephenson",
+  "license": "MIT",
+  "types": "./dist/index.d.ts",
+  "bugs": {
+    "url": "https://github.com/edstevo/nestjs-notifications/issues"
+  },
+  "homepage": "https://github.com/edstevo/nestjs-notifications#readme",
   "dependencies": {
-    "@nestjs/common": "^7.5.1",
-    "@nestjs/core": "^7.5.1",
-    "@nestjs/platform-express": "^7.5.1",
-    "@types/axios": "^0.14.0",
-    "reflect-metadata": "^0.1.13",
-    "rimraf": "^3.0.2",
-    "rxjs": "^6.6.3"
+    "@nestjs/axios": "^3.0.1",
+    "@nestjs/common": "^10.3.0",
+    "@nestjs/core": "^10.3.0",
+    "@nestjs/platform-express": "^10.3.0",
+    "axios": "^1.6.5",
+    "bull": "^4.12.0",
+    "rimraf": "^5.0.5",
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@nestjs/bull": "^0.3.1",
-    "@nestjs/cli": "^7.5.1",
-    "@nestjs/schematics": "^7.1.3",
-    "@nestjs/testing": "^7.5.1",
-    "@types/bull": "^3.15.0",
-    "@types/express": "^4.17.8",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^14.14.6",
-    "@types/supertest": "^2.0.10",
-    "@typescript-eslint/eslint-plugin": "^4.6.1",
-    "@typescript-eslint/parser": "^4.6.1",
-    "bull": "^3.22.0",
-    "eslint": "^7.12.1",
-    "eslint-config-prettier": "7.2.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "jest": "^26.6.3",
-    "prettier": "^2.1.2",
-    "supertest": "^6.0.0",
-    "ts-jest": "^26.4.3",
-    "ts-loader": "^8.0.8",
-    "ts-node": "^9.0.0",
-    "tsconfig-paths": "^3.9.0",
-    "typescript": "^4.0.5"
+    "@nestjs/bull": "^10.0.1",
+    "@nestjs/cli": "^10.3.0",
+    "@nestjs/schematics": "^10.1.0",
+    "@nestjs/testing": "^10.3.0",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.10.8",
+    "@types/supertest": "^6.0.2",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.2",
+    "jest": "^29.7.0",
+    "prettier": "^3.1.1",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.1",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.3.3"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -84,6 +80,10 @@
     },
     "collectCoverageFrom": [
       "**/*.(t|j)s"
+    ],
+    "coveragePathIgnorePatterns": [
+      "index.(t|j)s",
+      "notification.example.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"

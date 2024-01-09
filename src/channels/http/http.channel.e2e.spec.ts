@@ -1,4 +1,4 @@
-import { HttpModule, HttpService, Type } from '@nestjs/common';
+import { Type } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpChannel } from './http.channel';
 import { NestJsNotificationsService } from '../../nestjs-notifications.service';
@@ -6,6 +6,7 @@ import { NestJsNotificationsModule } from '../../nestjs-notifications.module';
 import { HttpNotification } from './http-notification.interface';
 import { of } from 'rxjs';
 import { NestJsNotificationChannel } from '../notification-channel.interface';
+import { HttpModule, HttpService } from '@nestjs/axios';
 
 const testUrl = 'testUrl';
 const testData = { test: true };

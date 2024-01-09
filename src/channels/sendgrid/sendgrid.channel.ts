@@ -1,5 +1,4 @@
 import {
-  HttpService,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -7,6 +6,7 @@ import { SendGridNotification } from './sendgrid-notification.interface';
 import { NestJsNotificationChannel } from '../notification-channel.interface';
 import { SendGridApiUrl } from './constants';
 import { AxiosResponse } from 'axios';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class SendGridChannel implements NestJsNotificationChannel {

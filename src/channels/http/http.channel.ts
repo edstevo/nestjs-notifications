@@ -1,11 +1,11 @@
 import {
-  HttpService,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { HttpNotification } from './http-notification.interface';
 import { NestJsNotificationChannel } from '../notification-channel.interface';
 import { AxiosResponse } from 'axios';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class HttpChannel implements NestJsNotificationChannel {
