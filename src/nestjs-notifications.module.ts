@@ -86,7 +86,7 @@ export class NestJsNotificationsModule {
 
   static createAsyncProviders(
     options: NestJsNotificationsModuleAsyncOptions,
-  ): Provider[] {
+  ): Provider<any>[] {
     if (options.useExisting || options.useFactory) {
       return [this.createAsyncOptionsProvider(options)];
     } else if (!options.useClass) {
@@ -94,7 +94,6 @@ export class NestJsNotificationsModule {
         {
           provide: NESTJS_NOTIFICATIONS_OPTIONS,
           useValue: {},
-          inject: options.inject || [],
         },
       ];
     }

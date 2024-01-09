@@ -1,4 +1,4 @@
-import { HttpModule, HttpService, Type } from '@nestjs/common';
+import { Type } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SendGridChannel } from './sendgrid.channel';
 import { NestJsNotificationsService } from '../../nestjs-notifications.service';
@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 import { NestJsNotificationChannel } from '../notification-channel.interface';
 import { SendGridApiUrl } from './constants';
 import { NestJsNotificationsModuleOptions } from '../../interfaces';
+import { HttpModule, HttpService } from '@nestjs/axios';
 
 const testApiKey = 'testApiKey';
 const testData = { test: true };

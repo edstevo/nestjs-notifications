@@ -1,4 +1,4 @@
-import { HttpModule, HttpService, Type } from '@nestjs/common';
+import { Type } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SendGridChannel } from './sendgrid.channel';
 import { SendGridNotification } from './sendgrid-notification.interface';
@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { NestJsNotificationChannel } from '../notification-channel.interface';
 import { SendGridApiUrl } from './constants';
 import { SendGridRequestBody } from './interfaces/sendgrid-request-body.interface';
+import { HttpModule, HttpService } from '@nestjs/axios';
 
 const testApiKey = 'testUrl';
 const testToSendGridData: SendGridRequestBody = {
@@ -50,6 +51,16 @@ class TestToPayloadNotification implements SendGridNotification {
   toPayload?(): any {
     return testToPayloadData;
   }
+  public broadcastOn(): Type<NestJsNotificationChannel>[] {
+    return [SendGridChannel];
+  }
+}
+
+class TestToPayloadNotificationThrows implements SendGridNotification {
+  sendGridApiKey(): string {
+    return testApiKey;
+  }
+  
   public broadcastOn(): Type<NestJsNotificationChannel>[] {
     return [SendGridChannel];
   }
@@ -103,6 +114,18 @@ describe('SendGridChannel', () => {
       const notification = new TestToPayloadNotification();
       const res = service.getData(notification);
       expect(res).toEqual(testToPayloadData);
+    });
+
+    it('should return a thows exception', () => {
+      try {
+        const notification = new TestToPayloadNotificationThrows();
+        const res = service.getData(notification);
+
+        expect(true).toBe(false);
+      } catch (e) {
+          expect(e.message).toBe('Notification is missing toPayload method.');
+      }
+
     });
   });
 

@@ -1,9 +1,10 @@
-import { HttpModule, HttpService, Type } from '@nestjs/common';
+import { Type } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpChannel } from './http.channel';
 import { HttpNotification } from './http-notification.interface';
 import { of } from 'rxjs';
 import { NestJsNotificationChannel } from '../notification-channel.interface';
+import { HttpModule, HttpService } from '@nestjs/axios';
 
 const testUrl = 'testUrl';
 const testToHttpData = { test: 'toHttp' };
@@ -34,6 +35,16 @@ class TestToPayloadNotification implements HttpNotification {
   toPayload?(): Record<string, any> {
     return testToPayloadData;
   }
+  public broadcastOn(): Type<NestJsNotificationChannel>[] {
+    return [HttpChannel];
+  }
+}
+
+class TestToPayloadNotificationThrow implements HttpNotification {
+  httpUrl(): string {
+    return testUrl;
+  }
+
   public broadcastOn(): Type<NestJsNotificationChannel>[] {
     return [HttpChannel];
   }
@@ -87,6 +98,18 @@ describe('HttpChannel', () => {
       const notification = new TestToPayloadNotification();
       const res = service.getData(notification);
       expect(res).toEqual(testToPayloadData);
+    });
+
+    it('should return a thows exception', () => {
+      try {
+        const notification = new TestToPayloadNotificationThrow();
+        const res = service.getData(notification);
+
+        expect(true).toBe(false);
+      } catch (e) {
+          expect(e.message).toBe('Notification is missing toPayload method.');
+      }
+
     });
   });
 
